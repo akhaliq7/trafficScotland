@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">Traffic Scotland</string>
+    <string name="loading">Loading RSS Feed..</string>
+
+    <!-- activity items main  -->
+    <string name="items_title">Traffic Scotland</string>
+
+    <!-- list view item and activity item -->
+    <string name="item_pub_date">Published: Sat 11 Apri 2020</string>
+    <string name="item_title">Item title</string>
+
+    <!-- activity item -->
+    <string name="item_description">Item description</string>
+    <string name="item_link">Read more on the web</string>
+    <string name="geo_point">coordinates</string>
+
+    <!-- menu -->
+    <string name="menu_refresh">Refresh</string>
+    <string name="menu_settings">Settings</string>
+</resources>
