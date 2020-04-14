@@ -1,51 +1,41 @@
 package com.example.android.trafficscotland.controller;
 
 import android.app.Activity;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.android.trafficscotland.R;
-import com.example.android.trafficscotland.model.RSSFeed;
 import com.example.android.trafficscotland.model.RSSItem;
 import com.example.android.trafficscotland.util.FileIO;
+import com.example.android.trafficscotland.util.XMLParser;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 public class ItemsActivity extends Activity implements AdapterView.OnItemClickListener {
 
-    private RSSFeed feed;
     private FileIO io;
-
+    private XMLParser parse;
     private TextView titleTextView;
     private ListView itemsListView;
-
+    private ArrayList<RSSItem> itemsView;
+    private RSSItem view;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_items_main);
 
-        io = new FileIO(getApplicationContext());
+        io = new FileIO();
+        parse = new XMLParser();
 
         titleTextView = (TextView) findViewById(R.id.titleTextView);
         itemsListView = (ListView) findViewById(R.id.itemsListView);
@@ -56,24 +46,31 @@ public class ItemsActivity extends Activity implements AdapterView.OnItemClickLi
     }
 
 
-    class DownloadFeed extends AsyncTask<Void, Void, Void> {
+    class DownloadFeed extends AsyncTask<Void, Void, String> {
         @Override
-        protected Void doInBackground(Void... params) {
-            io.downloadFile();
-            return null;
+        protected String doInBackground(Void... params) {
+            String in = null;
+            try {
+                in = io.downloadFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return in;
         }
 
         @Override
-        protected void onPostExecute(Void result) {
+        protected void onPostExecute(String result) {
             Log.d("News reader", "Feed downloaded");
-            new ReadFeed().execute();
+            new ReadFeed().execute(result);
         }
     }
-
-    class ReadFeed extends AsyncTask<Void, Void, Void> {
+        // 1. params, 2. progress 3. results
+    class ReadFeed extends AsyncTask<String, Void, Void> {
         @Override
-        protected Void doInBackground(Void... params) {
-            feed = io.readFile();
+        protected Void doInBackground(String... params) {
+            String s = params[0];
+            parse.pullParser(s);
+            itemsView = parse.getItems();
             return null;
         }
 
@@ -87,50 +84,37 @@ public class ItemsActivity extends Activity implements AdapterView.OnItemClickLi
 
     public void updateDisplay()
     {
-        if (feed == null) {
+        if (itemsView == null) {
             titleTextView.setText("Unable to get RSS feed");
             return;
         }
-
-        // set the title for the feed
-        titleTextView.setText(feed.getTitle());
-
-        // get the items for the feed
-        List<RSSItem> items = feed.getAllItems();
-
-        // create a List of Map<String, ?> objects
-        ArrayList<HashMap<String, String>> data =
-                new ArrayList<HashMap<String, String>>();
-        for (RSSItem item : items) {
+        ArrayList<HashMap<String, String>> data = new ArrayList<HashMap<String, String>>();
+        for (RSSItem it : itemsView) {
             HashMap<String, String> map = new HashMap<String, String>();
-            map.put("date", item.getPubDateFormatted());
-            map.put("title", item.getTitle());
+            map.put("title", it.getTitle());
             data.add(map);
         }
-
         // create the resource, from, and to variables
         int resource = R.layout.listview_item;
-        String[] from = {"date", "title"};
-        int[] to = { R.id.pubDateTextView, R.id.titleTextView};
+        String[] from = {"title"};
+        int[] to = {R.id.titleTextView};
 
         // create and set the adapter
         SimpleAdapter adapter =
                 new SimpleAdapter(this, data, resource, from, to);
         itemsListView.setAdapter(adapter);
-
-        Log.d("News reader", "Feed displayed");
     }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View v, int position, long id)
     {
-        RSSItem item = feed.getItem(position);
+//        RSSItem item = itemsView.getItem(position);
 
         Intent intent = new Intent(this, ItemActivity.class);
-        intent.putExtra("pubdate", item.getPubDate());
-        intent.putExtra("title", item.getTitle());
-        intent.putExtra("description", item.getDescription());
-        intent.putExtra("link", item.getLink());
+//        intent.putExtra("pubdate", item.getPubDate());
+//        intent.putExtra("title", item.getTitle());
+//        intent.putExtra("description", item.getDescription());
+//        intent.putExtra("link", item.getLink());
 
         this.startActivity(intent);
     }

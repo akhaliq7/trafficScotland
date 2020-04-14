@@ -10,7 +10,9 @@ public class RSSItem
     private String description = null;
     private String link = null;
     private String pubDate = null;
-
+    private String startDate = null;
+    private String endDate = null;
+    private String georss = null;
     private SimpleDateFormat dateOutFormat =
             new SimpleDateFormat("EEEE h:mm a (MMM d)");   // Only includes date, not time
 
@@ -63,5 +65,29 @@ public class RSSItem
         catch (ParseException e) {
             return "No date in RSS feed";      // don't throw exception
         }
+    }
+
+    public String getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
+    }
+
+    public String getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDateAsString(String endDate) {
+        this.endDate = endDate;
+    }
+
+    public String getGeorss() {
+        return georss;
+    }
+
+    public void setGeorss(String georss) {
+        this.georss = georss;
     }
 }

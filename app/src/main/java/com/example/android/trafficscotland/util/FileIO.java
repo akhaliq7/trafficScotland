@@ -1,21 +1,18 @@
 package com.example.android.trafficscotland.util;
 
-import android.content.Context;
 import android.util.Log;
 
-import com.example.android.trafficscotland.model.RSSFeed;
+import com.example.android.trafficscotland.model.RSSItem;
 
-import org.xml.sax.InputSource;
-import org.xml.sax.XMLReader;
-
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLConnection;
+import java.util.ArrayList;
 
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
 
 public class FileIO
 {
@@ -24,64 +21,48 @@ public class FileIO
     //private String urlSource = "https://trafficscotland.org/rss/feeds/plannedroadworks.aspx";
     //private String urlSource = "https://trafficscotland.org/rss/feeds/currentincidents.aspx";
     private final String URL_STRING = "https://trafficscotland.org/rss/feeds/roadworks.aspx";
-    private final String FILENAME = "rss_feed.xml";
-    private Context context = null;
+    ArrayList<RSSItem> roadworks = new ArrayList<>();
+    public FileIO () {}
 
-    public FileIO (Context context) { this.context = context;}
-
-    public void downloadFile() {
+    public String downloadFile() throws IOException{
+        // variables
+        URL url = new URL(URL_STRING);
+        BufferedReader buffer = null;
+        InputStream in = null;
+        String result = "";
+        int response = -1;
+        URLConnection conn = url.openConnection();
         try{
             // get the URL
-            URL url = new URL(URL_STRING);
+            HttpURLConnection httpConn = (HttpURLConnection) conn;
+            httpConn.setAllowUserInteraction(false);
+            httpConn.setInstanceFollowRedirects(true);
+            httpConn.setRequestMethod("GET");
+            httpConn.setConnectTimeout(5000);
+            httpConn.connect();
 
-            // get the input stream
-            InputStream in = url.openStream();
+            response = httpConn.getResponseCode();
 
-            // get the output stream
-            FileOutputStream out = context.openFileOutput(FILENAME, Context.MODE_PRIVATE);
+            if(response == HttpURLConnection.HTTP_OK) {
+                Log.e("XML TAG", "Connection Found");
+                // Read data
+                in = httpConn.getInputStream();
+                InputStreamReader reader = new InputStreamReader(in);
+                BufferedReader br = new BufferedReader(reader);
 
-            // read input and write output
-            byte[] buffer = new byte[1024];
-            int bytesRead = in.read(buffer);
-
-            while (bytesRead != -1)
-            {
-                out.write(buffer, 0, bytesRead);
-                bytesRead = in.read(buffer);
+                // pass data to a string
+                String x = "";
+                while((x = br.readLine()) != null) {
+                    result = result + x;
+                }
+            } else {
+                Log.e("XML TAG", "Connection not found!");
             }
 
-            out.close();
-            in.close();
         } catch (IOException e) {
-            Log.e("Roadworks reader", e.toString());
+            Log.e("Sorry can not connect!", e.toString());
         }
+        return result;
     }
-    public RSSFeed readFile()
-    {
-        try {
-            // REPLACE WITH PULLPARSER
-            // get the XML reader
-            SAXParserFactory factory = SAXParserFactory.newInstance();
-            SAXParser parser = factory.newSAXParser();
-            XMLReader xmlreader = parser.getXMLReader();
 
-            // set content handler
-            RSSFeedHandler theRssHandler = new RSSFeedHandler();
-            xmlreader.setContentHandler(theRssHandler);
-
-            // read the file from internal storage
-            FileInputStream in = context.openFileInput(FILENAME);
-
-            // parse the data
-            InputSource is = new InputSource(in);
-            xmlreader.parse(is);
-
-            // set the feed in the activity
-            RSSFeed feed = theRssHandler.getFeed();
-            return feed;
-        } catch (Exception e) {
-            Log.e("roadworks reader", e.toString());
-            return null;
-        }
-    }
 }
