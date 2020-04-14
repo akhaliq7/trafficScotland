@@ -33,7 +33,12 @@ The application can be deployed to the Google Play Store.
 
 ## Versioning
 
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
+The android os uses versioning for its applications. For each update a number is indented relative to the update importance defined by the user.
+
+# API
+Min SDK - 23
+Target SDK - 28
+Device emulator - Pixel 3
 
 ## Authors
 
