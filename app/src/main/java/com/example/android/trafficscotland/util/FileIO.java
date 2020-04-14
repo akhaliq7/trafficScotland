@@ -20,13 +20,13 @@ public class FileIO
     //private String urlSource = "https://trafficscotland.org/rss/feeds/roadworks.aspx";
     //private String urlSource = "https://trafficscotland.org/rss/feeds/plannedroadworks.aspx";
     //private String urlSource = "https://trafficscotland.org/rss/feeds/currentincidents.aspx";
-    private final String URL_STRING = "https://trafficscotland.org/rss/feeds/roadworks.aspx";
+
     ArrayList<RSSItem> roadworks = new ArrayList<>();
     public FileIO () {}
 
-    public String downloadFile() throws IOException{
+    public String downloadFile(String urlString) throws IOException{
         // variables
-        URL url = new URL(URL_STRING);
+        URL url = new URL(urlString);
         BufferedReader buffer = null;
         InputStream in = null;
         String result = "";

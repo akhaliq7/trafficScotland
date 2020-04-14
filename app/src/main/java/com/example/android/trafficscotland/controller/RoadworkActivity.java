@@ -9,12 +9,12 @@ import android.widget.TextView;
 
 import com.example.android.trafficscotland.R;
 
-public class ItemActivity extends Activity implements View.OnClickListener {
+public class RoadworkActivity extends Activity implements View.OnClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_item_main);
+        setContentView(R.layout.roadwork_activity);
 
         // get references to widgets
         TextView titleTextView = (TextView) findViewById(R.id.titleTextView);

@@ -19,9 +19,8 @@ import com.example.android.trafficscotland.util.XMLParser;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
-public class ItemsActivity extends Activity implements AdapterView.OnItemClickListener {
+public class RoadworksActivity extends Activity implements AdapterView.OnItemClickListener {
 
     private FileIO io;
     private XMLParser parse;
@@ -29,10 +28,11 @@ public class ItemsActivity extends Activity implements AdapterView.OnItemClickLi
     private ListView itemsListView;
     private ArrayList<RSSItem> itemsView;
     private RSSItem view;
+    private final String URL_STRING = "https://trafficscotland.org/rss/feeds/roadworks.aspx";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_items_main);
+        setContentView(R.layout.roadworks_activity);
 
         io = new FileIO();
         parse = new XMLParser();
@@ -42,16 +42,16 @@ public class ItemsActivity extends Activity implements AdapterView.OnItemClickLi
 
         itemsListView.setOnItemClickListener(this);
 
-        new DownloadFeed().execute();
+        new DownloadFeed().execute(URL_STRING);
     }
 
 
-    class DownloadFeed extends AsyncTask<Void, Void, String> {
+    class DownloadFeed extends AsyncTask<String, Void, String> {
         @Override
-        protected String doInBackground(Void... params) {
+        protected String doInBackground(String... params) {
             String in = null;
             try {
-                in = io.downloadFile();
+                in = io.downloadFile(params[0]);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -78,7 +78,7 @@ public class ItemsActivity extends Activity implements AdapterView.OnItemClickLi
         protected void onPostExecute(Void result) {
             Log.d("Roadworks reader", "Feed read");
             // update the display for the activity
-            ItemsActivity.this.updateDisplay();
+            RoadworksActivity.this.updateDisplay();
         }
     }
 
@@ -95,7 +95,7 @@ public class ItemsActivity extends Activity implements AdapterView.OnItemClickLi
             data.add(map);
         }
         // create the resource, from, and to variables
-        int resource = R.layout.listview_item;
+        int resource = R.layout.listview_roadworks;
         String[] from = {"title"};
         int[] to = {R.id.titleTextView};
 
@@ -110,7 +110,7 @@ public class ItemsActivity extends Activity implements AdapterView.OnItemClickLi
     {
 //        RSSItem item = itemsView.getItem(position);
 
-        Intent intent = new Intent(this, ItemActivity.class);
+        Intent intent = new Intent(this, RoadworkActivity.class);
 //        intent.putExtra("pubdate", item.getPubDate());
 //        intent.putExtra("title", item.getTitle());
 //        intent.putExtra("description", item.getDescription());
