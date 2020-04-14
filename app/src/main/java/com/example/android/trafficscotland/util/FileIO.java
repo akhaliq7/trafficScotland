@@ -17,7 +17,7 @@ import java.util.ArrayList;
 public class FileIO
 {
     // Traffic Scotland URLs
-    //private String urlSource = "https://trafficscotland.org/rss/feeds/roadworks.aspx";
+
     //private String urlSource = "https://trafficscotland.org/rss/feeds/plannedroadworks.aspx";
     //private String urlSource = "https://trafficscotland.org/rss/feeds/currentincidents.aspx";
 
