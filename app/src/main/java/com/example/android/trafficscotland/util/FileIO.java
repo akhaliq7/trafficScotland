@@ -19,7 +19,6 @@ public class FileIO
     // Traffic Scotland URLs
 
     //private String urlSource = "https://trafficscotland.org/rss/feeds/plannedroadworks.aspx";
-    //private String urlSource = "https://trafficscotland.org/rss/feeds/currentincidents.aspx";
 
     ArrayList<RSSItem> roadworks = new ArrayList<>();
     public FileIO () {}

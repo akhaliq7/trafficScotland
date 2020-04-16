@@ -1,21 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical" >
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/titleTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="7dp"
-            android:paddingRight="7dp"
             android:paddingTop="5dp"
+            android:paddingRight="7dp"
             android:text="@string/item_title"
             android:textSize="24sp"
             android:textStyle="bold" />
@@ -33,10 +34,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="7dp"
-            android:paddingRight="7dp"
             android:paddingTop="5dp"
+            android:paddingRight="7dp"
             android:text="@string/item_link"
             android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/geoTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="7dp"
+            android:paddingTop="5dp"
+            android:paddingRight="7dp"
+            android:text="geo" />
 
         <TextView
             android:id="@+id/pubDateTextView"
@@ -49,5 +59,14 @@
             android:textColor="@color/blue"
             android:textSize="18sp" />
 
+
     </LinearLayout>
 </ScrollView>
+
+
+
+
+
+
+
+
