@@ -1,6 +1,6 @@
 package com.example.android.trafficscotland.util;
 
-public class helper {
+public class DataFormat {
     public String getDescription(String desc) {
         int result = desc.lastIndexOf("<br />");
         if (result == -1) {

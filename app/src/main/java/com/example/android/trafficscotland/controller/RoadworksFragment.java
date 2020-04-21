@@ -2,7 +2,6 @@ package com.example.android.trafficscotland.controller;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -10,44 +9,57 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentTransaction;
+
 import com.example.android.trafficscotland.R;
 import com.example.android.trafficscotland.model.RSSItem;
-import com.example.android.trafficscotland.util.FileIO;
+import com.example.android.trafficscotland.util.FeedDownload;
 import com.example.android.trafficscotland.util.XMLParser;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class RoadworksFragment extends Fragment {
+public class RoadworksFragment extends Fragment  {
 
-    private FileIO io; // object that will download the data
+    private FeedDownload io; // object that will download the data
     private XMLParser parse; // object that will extract the data
     private ListView itemsListView; // the single widget in the roadworks fragment xml
     private ArrayList<RSSItem> itemsView; // Data structure to hold the dat
     private String URL_STRING = "https://trafficscotland.org/rss/feeds/roadworks.aspx";
+    private SimpleAdapter adapter;
+    private View view;
     public RoadworksFragment(){}
     @Override
-    public void onCreate(Bundle savedInstanceState) { super.onCreate(savedInstanceState); }
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        super.onSaveInstanceState(savedInstanceState);
+    }
+
+   @Override
+   public void onAttach(Context context){
+        super.onAttach(context);
+   }
+    @Override
+    public void onDetach() {
+        super.onDetach();
+    }
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         // inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_roadworks, container, false);
+        view = inflater.inflate(R.layout.fragment_roadworks, container, false);
+
+
         // create objects
-        io = new FileIO();
+        io = new FeedDownload();
         parse = new XMLParser();
         // get references to the widgets
         ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Traffic Scotland - Roadworks");
@@ -57,6 +69,7 @@ public class RoadworksFragment extends Fragment {
         // return the View for the layout
         return view;
     }
+
 
     class DownloadFeed extends AsyncTask<String, Void, String> {
         @Override
@@ -107,37 +120,27 @@ public class RoadworksFragment extends Fragment {
         ArrayList<HashMap<String, String>> data = new ArrayList<HashMap<String, String>>();
         for (RSSItem it : itemsView) {
             HashMap<String, String> map = new HashMap<String, String>();
-            map.put("title", it.getTitle());
+            map.put("pubDate", ( it.getPubDateFormatted()));
+            map.put("title", ( "Title: " + it.getTitle()));
+            map.put("startEndDate", ( "Start Date: " + it.getStartDate() + "- End Date: " + it.getEndDate()));
+            map.put("description", ( "Description: " + it.getDescription()));
+            map.put("link", ( "Link: " + it.getLink()));
+            map.put("georss", ("Coordinates: " + it.getGeorss()));
             data.add(map);
         }
         // create the resource, from, and to variables
         int resource = R.layout.listview_roadworks;
-        String[] from = {"title"};
-        int[] to = {R.id.titleTextView};
+        String[] from = {"pubDate", "title", "startEndDate", "description", "link", "georss"};
+        int[] to = {R.id.pubDateTextView, R.id.titleTextView, R.id.startEndDateTextView,
+                R.id.descriptionTextView, R.id.linkTextView, R.id.geoTextView};
 
         // create and set the adapter
-        SimpleAdapter adapter =
-                new SimpleAdapter(getActivity(), data, resource, from, to);
-        itemsListView.setAdapter(adapter);
-    }
-
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        Log.e("CONFIGTAG", "Orientation changed");
-        //super.onConfigurationChanged(newConfig);
-        Configuration c = getResources().getConfiguration();
-
-        if (c.orientation == Configuration.ORIENTATION_PORTRAIT) {
-            //	setContentView(R.layout.main);
-            Toast toast = Toast.makeText(getActivity(), "Portrait Mode", Toast.LENGTH_SHORT);
-            toast.show();
-        } else if (c.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            //setContentView(R.layout.main);
-            Toast toast = Toast.makeText(getActivity(), "Landscape Mode", Toast.LENGTH_SHORT);
-            toast.show();
+        if(getActivity() != null) {
+            adapter =
+                    new SimpleAdapter(getActivity().getApplicationContext(), data, resource, from, to);
+            itemsListView.setAdapter(adapter);
         }
     }
 
-} // End of MainActivity
+
+} // End of Fragment class

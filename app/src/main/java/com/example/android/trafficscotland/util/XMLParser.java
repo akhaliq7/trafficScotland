@@ -29,7 +29,7 @@ public class XMLParser {
             XmlPullParser xpp = factory.newPullParser();
             xpp.setInput(new StringReader(reader));
             int eventType = xpp.getEventType();
-            helper help = new helper();
+            DataFormat help = new DataFormat();
             while(eventType != XmlPullParser.END_DOCUMENT) {
                 if(eventType == XmlPullParser.START_DOCUMENT) {
                     System.out.println("Start Document");
@@ -51,7 +51,7 @@ public class XMLParser {
 
                             if(dates != null) {
                                 item.setStartDate(help.convertLongDateToShort(dates[0]));
-                                item.setStartDate(help.convertLongDateToShort(dates[1]));
+                                item.setEndDate(help.convertLongDateToShort(dates[1]));
                             }
                             eventType = xpp.nextTag();
                             eventType = xpp.nextTag();
@@ -73,10 +73,10 @@ public class XMLParser {
                         eventType = xpp.nextTag();
                         eventType = xpp.nextTag();
 
-                        if(xpp.getName().equalsIgnoreCase("pubDate")) {
+                        if(xpp.getName().equals("pubDate")) {
                             eventType = xpp.next();
-                            item.setPubDate(help.convertLongDateToShort(xpp.getText()));
-
+                            item.setPubDate(xpp.getText());
+                            Log.v("check data", xpp.getText());
                             eventType = xpp.nextTag();
                             eventType = xpp.nextTag();
                         }

@@ -1,8 +1,13 @@
 package com.example.android.trafficscotland.model;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class RSSItem
 {
@@ -13,6 +18,7 @@ public class RSSItem
     private String startDate = null;
     private String endDate = null;
     private String georss = null;
+
     private SimpleDateFormat dateOutFormat =
             new SimpleDateFormat("EEEE h:mm a (MMM d)");   // Only includes date, not time
 
@@ -79,7 +85,7 @@ public class RSSItem
         return endDate;
     }
 
-    public void setEndDateAsString(String endDate) {
+    public void setEndDate(String endDate) {
         this.endDate = endDate;
     }
 
@@ -90,4 +96,6 @@ public class RSSItem
     public void setGeorss(String georss) {
         this.georss = georss;
     }
+
+
 }

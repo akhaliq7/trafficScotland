@@ -14,14 +14,10 @@ import java.net.URLConnection;
 import java.util.ArrayList;
 
 
-public class FileIO
+public class FeedDownload
 {
-    // Traffic Scotland URLs
-
-    //private String urlSource = "https://trafficscotland.org/rss/feeds/plannedroadworks.aspx";
-
     ArrayList<RSSItem> roadworks = new ArrayList<>();
-    public FileIO () {}
+    public FeedDownload() {}
 
     public String downloadFile(String urlString) throws IOException{
         // variables

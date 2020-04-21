@@ -8,27 +8,23 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ListView;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.appcompat.widget.Toolbar;
 import androidx.appcompat.app.AppCompatActivity;
 import com.example.android.trafficscotland.R;
 import com.example.android.trafficscotland.model.RSSItem;
-import com.example.android.trafficscotland.util.FileIO;
+import com.example.android.trafficscotland.util.FeedDownload;
 import com.example.android.trafficscotland.util.XMLParser;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class CurrentIncidentFragment extends Fragment {
 
-    private FileIO io;
+    private FeedDownload io;
     private XMLParser parse;
     private TextView title;
     private TextView description;
@@ -41,6 +37,15 @@ public class CurrentIncidentFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        super.onSaveInstanceState(savedInstanceState);
+    }
+    @Override
+    public void onAttach(Context context){
+        super.onAttach(context);
+    }
+    @Override
+    public void onDetach() {
+        super.onDetach();
     }
     @Nullable
     @Override
@@ -48,16 +53,16 @@ public class CurrentIncidentFragment extends Fragment {
         // 1. inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_current_incident, container, false);
         // 2. create objects
-        io = new FileIO();
+        io = new FeedDownload();
         parse = new XMLParser();
         // 3. get references to the widgets
         ((AppCompatActivity)getActivity()).getSupportActionBar().setTitle("Traffic Scotland - Current Incidents");
-        title = view.findViewById(R.id.titleTextView);
+        title = (TextView) view.findViewById(R.id.titleTextView);
         description = (TextView) view.findViewById(R.id.descriptionTextView);
         link = (TextView) view.findViewById(R.id.linkTextView);
         georss = (TextView) view.findViewById(R.id.geoTextView);
         pubDate = (TextView) view.findViewById(R.id.pubDateTextView);
-        // 4. set the listeners
+        // 4. set the listeners/methods
         new DownloadFeed().execute(URL_STRING);
         // 5. return the View for the layout
         return view;
@@ -107,31 +112,14 @@ public class CurrentIncidentFragment extends Fragment {
             return;
         }
         for (RSSItem it : itemsView) {
-            title.setText(it.getTitle());
-            description.setText(it.getDescription());
-            link.setText(it.getLink());
-            georss.setText(it.getGeorss());
-            pubDate.setText(it.getPubDate());
+            title.setText( "Title: " + it.getTitle());
+            description.setText( "Description: " + it.getDescription());
+            link.setText( "Link: " + it.getLink());
+            georss.setText( "Coordinates: " + it.getGeorss());
+            pubDate.setText( "Publication Date: " + it.getPubDate());
         }
 
 
 
-    }
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        Log.e("CONFIGTAG", "Orientation changed");
-        //super.onConfigurationChanged(newConfig);
-        Configuration c = getResources().getConfiguration();
-
-        if (c.orientation == Configuration.ORIENTATION_PORTRAIT) {
-            //	setContentView(R.layout.main);
-            Toast toast = Toast.makeText(getActivity(), "Portrait Mode", Toast.LENGTH_SHORT);
-            toast.show();
-        } else if (c.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            //setContentView(R.layout.main);
-            Toast toast = Toast.makeText(getActivity(), "Landscape Mode", Toast.LENGTH_SHORT);
-            toast.show();
-        }
     }
 }
