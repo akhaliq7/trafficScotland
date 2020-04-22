@@ -80,7 +80,7 @@ public class CurrentIncidentFragment extends Fragment {
         }
         @Override
         protected void onPostExecute(String result) {
-            Log.d("News reader", "Feed downloaded");
+            Log.d("reader", "Feed downloaded");
             new ReadFeed().execute(result);
         }
     }

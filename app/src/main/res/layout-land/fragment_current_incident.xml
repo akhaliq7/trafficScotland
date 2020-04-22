@@ -18,7 +18,7 @@
             android:paddingTop="5dp"
             android:paddingRight="7dp"
             android:text="@string/item_title"
-            android:textSize="24sp"
+            android:textSize="18sp"
             android:textStyle="bold" />
 
         <TextView
@@ -26,27 +26,32 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="7dp"
-            android:paddingTop="5dp"
-            android:text="@string/item_description" />
+            android:paddingTop="2dp"
+            android:textSize="18sp"
+            android:text="@string/item_description"
+            />
 
         <TextView
             android:id="@+id/linkTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="7dp"
-            android:paddingTop="5dp"
+            android:paddingTop="2dp"
             android:paddingRight="7dp"
             android:text="@string/item_link"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            />
 
         <TextView
             android:id="@+id/geoTextView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="7dp"
-            android:paddingTop="5dp"
+            android:paddingTop="2dp"
             android:paddingRight="7dp"
-            android:text="geo" />
+            android:textSize="18sp"
+            android:text="geo"
+            />
 
         <TextView
             android:id="@+id/pubDateTextView"
@@ -54,19 +59,11 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:paddingLeft="7dp"
-            android:paddingTop="5dp"
+            android:paddingTop="2dp"
             android:text="@string/item_pub_date"
-            android:textColor="@color/blue"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            />
 
 
     </LinearLayout>
 </ScrollView>
-
-
-
-
-
-
-
-

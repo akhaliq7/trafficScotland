@@ -85,7 +85,7 @@ public class RoadworksFragment extends Fragment  {
 
         @Override
         protected void onPostExecute(String result) {
-            Log.d("News reader", "Feed downloaded");
+            Log.d("reader", "Feed downloaded");
             new ReadFeed().execute(result);
         }
     }
@@ -120,9 +120,9 @@ public class RoadworksFragment extends Fragment  {
         ArrayList<HashMap<String, String>> data = new ArrayList<HashMap<String, String>>();
         for (RSSItem it : itemsView) {
             HashMap<String, String> map = new HashMap<String, String>();
-            map.put("pubDate", ( it.getPubDateFormatted()));
+            map.put("pubDate", ( "Publication Date: " +it.getPubDateFormatted()));
             map.put("title", ( "Title: " + it.getTitle()));
-            map.put("startEndDate", ( "Start Date: " + it.getStartDate() + "- End Date: " + it.getEndDate()));
+            map.put("startEndDate", ( "Start Date: " + it.getStartDate() + " - End Date: " + it.getEndDate()));
             map.put("description", ( "Description: " + it.getDescription()));
             map.put("link", ( "Link: " + it.getLink()));
             map.put("georss", ("Coordinates: " + it.getGeorss()));

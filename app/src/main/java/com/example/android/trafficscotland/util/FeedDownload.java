@@ -16,7 +16,7 @@ import java.util.ArrayList;
 
 public class FeedDownload
 {
-    ArrayList<RSSItem> roadworks = new ArrayList<>();
+    //ArrayList<RSSItem> roadworks = new ArrayList<>();
     public FeedDownload() {}
 
     public String downloadFile(String urlString) throws IOException{
