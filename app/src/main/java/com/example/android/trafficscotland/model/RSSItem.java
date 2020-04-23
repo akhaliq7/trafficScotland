@@ -1,5 +1,6 @@
 package com.example.android.trafficscotland.model;
-
+// Author: Amar Khaliq
+// Matric Number: S1828979
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 

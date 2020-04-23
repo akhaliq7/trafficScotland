@@ -1,5 +1,6 @@
 package com.example.android.trafficscotland.util;
-
+// Author: Amar Khaliq
+// Matric Number: S1828979
 import android.util.Log;
 
 import com.example.android.trafficscotland.model.RSSItem;

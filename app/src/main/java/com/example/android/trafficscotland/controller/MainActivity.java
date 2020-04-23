@@ -9,7 +9,8 @@
  * Date: 15/04/20
  */
 package com.example.android.trafficscotland.controller;
-
+// Author: Amar Khaliq
+// Matric Number: S1828979
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;

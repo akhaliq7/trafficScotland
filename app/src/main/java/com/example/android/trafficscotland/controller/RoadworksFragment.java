@@ -1,5 +1,6 @@
 package com.example.android.trafficscotland.controller;
-
+// Author: Amar Khaliq
+// Matric Number: S1828979
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Configuration;

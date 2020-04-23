@@ -1,5 +1,6 @@
 package com.example.android.trafficscotland.util;
-
+// Author: Amar Khaliq
+// Matric Number: S1828979
 public class DataFormat {
     public String getDescription(String desc) {
         int result = desc.lastIndexOf("<br />");
